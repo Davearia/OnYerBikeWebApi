@@ -1,7 +1,6 @@
-﻿
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace DAL.Models
+namespace Data.Models
 {
     public class ProductCategory
     {

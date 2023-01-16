@@ -1,0 +1,10 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/OnYerBikeWebApi/.vs/OnYerBike
+/OnYerBikeWebApi/Data/obj
+/OnYerBikeWebApi/WebApi/bin/Debug/net6.0
+/OnYerBikeWebApi/WebApi/obj
+/OnYerBikeWebApi/Data/bin/Debug/net6.0
+/.vs/OnYerBikeWebApi/v17

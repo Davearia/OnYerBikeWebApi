@@ -1,9 +1,9 @@
-﻿using DAL.Models;
+﻿using Data.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Context
 {
-    public class BikeShopDbContext : DbContext
+	public class BikeShopDbContext : DbContext
     {
 
         public DbSet<Product> Products { get; set; }
@@ -11,8 +11,10 @@ namespace DAL.Context
         public DbSet<ProductReview> ProductReviews { get; set; }
         public DbSet<ProductSubcategory> ProductSubcategories { get; set; }
         public DbSet<User> Users { get; set; }
+		public DbSet<OrderHeader> Orders { get; set; }
+		public DbSet<OrderLine> OrderLines { get; set; }
 
-        public BikeShopDbContext(DbContextOptions<BikeShopDbContext> options) : base(options)
+		public BikeShopDbContext(DbContextOptions<BikeShopDbContext> options) : base(options)
         {
         }
 

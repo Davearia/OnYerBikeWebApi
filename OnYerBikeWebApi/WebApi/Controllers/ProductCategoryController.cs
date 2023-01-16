@@ -1,10 +1,10 @@
-﻿using DAL.Models;
-using DAL.Repositories.Abstract;
+﻿using DAL.Repositories.Abstract;
+using Data.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DjBikeShopWebAPI.Controllers
 {
-    [Route("api/[controller]")]
+	[Route("api/[controller]")]
     [ApiController]
     public class ProductCategoryController : ControllerBase
     {

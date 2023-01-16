@@ -1,5 +1,5 @@
-﻿using DAL.Models;
-using DAL.Repositories.Abstract;
+﻿using DAL.Repositories.Abstract;
+using Data.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DjBikeShopWebAPI.Controllers

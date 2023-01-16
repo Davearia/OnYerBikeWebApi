@@ -2,6 +2,8 @@ using DAL.Context;
 using DAL.Repositories.Abstract;
 using DAL.Repositories.Concrete;
 using DAL.Seeding;
+using Data.Repositories.Abstract;
+using Data.Repositories.Concrete;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +17,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<BikeShopDbContext>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddTransient<IProductRepository, ProductRepository>();
+builder.Services.AddTransient<IOrderRepository, OrderRepository>();
 
 //Configure DB context
 var connectionString = builder.Configuration.GetConnectionString("AppDb");

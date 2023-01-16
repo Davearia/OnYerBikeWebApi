@@ -22,7 +22,61 @@ namespace Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("DAL.Models.Product", b =>
+            modelBuilder.Entity("Data.Models.OrderHeader", b =>
+                {
+                    b.Property<int?>("OrderHeaderId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("OrderHeaderId"));
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PostCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("State")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("OrderHeaderId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("Data.Models.OrderLine", b =>
+                {
+                    b.Property<int?>("OrderLineId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("OrderLineId"));
+
+                    b.Property<int?>("OrderHeaderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("OrderLineId");
+
+                    b.ToTable("OrderLines");
+                });
+
+            modelBuilder.Entity("Data.Models.Product", b =>
                 {
                     b.Property<int?>("ProductId")
                         .ValueGeneratedOnAdd()
@@ -70,7 +124,7 @@ namespace Data.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("DAL.Models.ProductCategory", b =>
+            modelBuilder.Entity("Data.Models.ProductCategory", b =>
                 {
                     b.Property<int?>("ProductCategoryId")
                         .ValueGeneratedOnAdd()
@@ -86,7 +140,7 @@ namespace Data.Migrations
                     b.ToTable("ProductCategories");
                 });
 
-            modelBuilder.Entity("DAL.Models.ProductReview", b =>
+            modelBuilder.Entity("Data.Models.ProductReview", b =>
                 {
                     b.Property<int?>("ProductReviewId")
                         .ValueGeneratedOnAdd()
@@ -117,13 +171,13 @@ namespace Data.Migrations
                     b.ToTable("ProductReviews");
                 });
 
-            modelBuilder.Entity("DAL.Models.ProductSubcategory", b =>
+            modelBuilder.Entity("Data.Models.ProductSubcategory", b =>
                 {
-                    b.Property<int?>("ProductSubcategoryId")
+                    b.Property<int?>("ProductSubCategoryId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("ProductSubcategoryId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("ProductSubCategoryId"));
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -131,12 +185,12 @@ namespace Data.Migrations
                     b.Property<int?>("ProductCategoryId")
                         .HasColumnType("int");
 
-                    b.HasKey("ProductSubcategoryId");
+                    b.HasKey("ProductSubCategoryId");
 
                     b.ToTable("ProductSubcategories");
                 });
 
-            modelBuilder.Entity("DAL.Models.User", b =>
+            modelBuilder.Entity("Data.Models.User", b =>
                 {
                     b.Property<int?>("UserId")
                         .ValueGeneratedOnAdd()

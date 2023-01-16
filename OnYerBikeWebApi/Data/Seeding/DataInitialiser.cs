@@ -1,12 +1,12 @@
 ﻿
 using DAL.Context;
-using DAL.Models;
+using Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
 namespace DAL.Seeding
 {
-    public class DataInitialiser
+	public class DataInitialiser
     {
 
         public static void SeedData(BikeShopDbContext context, string rootPath)

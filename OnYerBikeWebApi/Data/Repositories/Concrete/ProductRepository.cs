@@ -1,11 +1,11 @@
 ﻿using DAL.Context;
-using DAL.Models;
 using DAL.Repositories.Abstract;
+using Data.Models;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace DAL.Repositories.Concrete
 {
-    public class ProductRepository : IProductRepository
+	public class ProductRepository : IProductRepository
     {
 
         private BikeShopDbContext _context;
