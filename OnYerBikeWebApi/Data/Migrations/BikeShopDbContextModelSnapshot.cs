@@ -22,16 +22,39 @@ namespace Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Data.Models.OrderHeader", b =>
+            modelBuilder.Entity("Data.Entities.Cart", b =>
                 {
-                    b.Property<int?>("OrderHeaderId")
+                    b.Property<int?>("CartId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("OrderHeaderId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("CartId"));
+
+                    b.Property<decimal?>("CartPrice")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("ItemCount")
+                        .HasColumnType("int");
+
+                    b.HasKey("CartId");
+
+                    b.ToTable("Carts");
+                });
+
+            modelBuilder.Entity("Data.Entities.Order", b =>
+                {
+                    b.Property<int?>("OrderId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("OrderId"));
 
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("CartId")
+                        .HasColumnType("int");
 
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
@@ -42,22 +65,26 @@ namespace Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime?>("OrderDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("PostCode")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("Shipped")
+                        .HasColumnType("bit");
 
                     b.Property<string>("State")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("TotalPrice")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
+                    b.HasKey("OrderId");
 
-                    b.HasKey("OrderHeaderId");
+                    b.HasIndex("CartId");
 
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("Data.Models.OrderLine", b =>
+            modelBuilder.Entity("Data.Entities.OrderLine", b =>
                 {
                     b.Property<int?>("OrderLineId")
                         .ValueGeneratedOnAdd()
@@ -65,10 +92,13 @@ namespace Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("OrderLineId"));
 
-                    b.Property<int?>("OrderHeaderId")
+                    b.Property<int?>("OrderId")
                         .HasColumnType("int");
 
                     b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Quantity")
                         .HasColumnType("int");
 
                     b.HasKey("OrderLineId");
@@ -76,7 +106,7 @@ namespace Data.Migrations
                     b.ToTable("OrderLines");
                 });
 
-            modelBuilder.Entity("Data.Models.Product", b =>
+            modelBuilder.Entity("Data.Entities.Product", b =>
                 {
                     b.Property<int?>("ProductId")
                         .ValueGeneratedOnAdd()
@@ -124,7 +154,7 @@ namespace Data.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("Data.Models.ProductCategory", b =>
+            modelBuilder.Entity("Data.Entities.ProductCategory", b =>
                 {
                     b.Property<int?>("ProductCategoryId")
                         .ValueGeneratedOnAdd()
@@ -140,7 +170,7 @@ namespace Data.Migrations
                     b.ToTable("ProductCategories");
                 });
 
-            modelBuilder.Entity("Data.Models.ProductReview", b =>
+            modelBuilder.Entity("Data.Entities.ProductReview", b =>
                 {
                     b.Property<int?>("ProductReviewId")
                         .ValueGeneratedOnAdd()
@@ -171,7 +201,7 @@ namespace Data.Migrations
                     b.ToTable("ProductReviews");
                 });
 
-            modelBuilder.Entity("Data.Models.ProductSubcategory", b =>
+            modelBuilder.Entity("Data.Entities.ProductSubcategory", b =>
                 {
                     b.Property<int?>("ProductSubCategoryId")
                         .ValueGeneratedOnAdd()
@@ -190,7 +220,7 @@ namespace Data.Migrations
                     b.ToTable("ProductSubcategories");
                 });
 
-            modelBuilder.Entity("Data.Models.User", b =>
+            modelBuilder.Entity("Data.Entities.User", b =>
                 {
                     b.Property<int?>("UserId")
                         .ValueGeneratedOnAdd()
@@ -231,6 +261,15 @@ namespace Data.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Data.Entities.Order", b =>
+                {
+                    b.HasOne("Data.Entities.Cart", "Cart")
+                        .WithMany()
+                        .HasForeignKey("CartId");
+
+                    b.Navigation("Cart");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,7 +1,6 @@
 ﻿using DAL.Context;
 using DAL.Repositories.Abstract;
-using Data.Models;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Data.Entities;
 
 namespace DAL.Repositories.Concrete
 {

@@ -1,6 +1,6 @@
 ﻿
 using DAL.Context;
-using Data.Models;
+using Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 

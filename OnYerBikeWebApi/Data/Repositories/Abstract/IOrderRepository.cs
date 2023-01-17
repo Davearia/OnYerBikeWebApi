@@ -1,15 +1,13 @@
 ﻿using Data.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using WebApi.Models;
 
 namespace Data.Repositories.Abstract
 {
 	public interface IOrderRepository
 	{
-		void CreateOrder(OrderHeader order);
+		List<OrderDetailDto> GetOrderDetails(int orderId);
+
+        void CreateOrder(OrderDto order);
 
 	}
 }

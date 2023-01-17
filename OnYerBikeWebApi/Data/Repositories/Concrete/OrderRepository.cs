@@ -1,11 +1,8 @@
 ﻿using DAL.Context;
+using Data.Entities;
 using Data.Models;
 using Data.Repositories.Abstract;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using WebApi.Models;
 
 namespace Data.Repositories.Concrete
 {
@@ -24,17 +21,51 @@ namespace Data.Repositories.Concrete
 			this._context = _context;
 		}
 
-		public void CreateOrder(OrderHeader order)
+		public List<OrderDetailDto> GetOrderDetails(int orderId)
 		{
+			var query = from products in _context.Products
+						join orderLines in _context.OrderLines on products.ProductId equals orderLines.ProductId
+						where(orderLines.OrderId == orderId)
+						select new OrderDetailDto
+						{
+							ProductId = orderLines.ProductId,
+							Name = products.Name,
+							Price = orderLines.Quantity * products.ListPrice,
+							Quantity = orderLines.Quantity
+						};
+
+			return query.ToList();
+        }
+
+		public void CreateOrder(OrderDto orderDto)
+		{
+			var order = new Order()
+			{
+				Name = orderDto.Name,
+				Address= orderDto.Address,
+				City= orderDto.City,
+				State= orderDto.State,
+				PostCode= orderDto.PostCode,
+				Country= orderDto.Country,
+				OrderDate = DateTime.Now,
+				Cart = new Cart
+				{
+					CartPrice = orderDto.Cart.CartPrice,
+					ItemCount = orderDto.Cart.ItemCount				
+				}
+			};
+
 			_context.Orders.Add(order);
+
 			_context.SaveChanges();
 
-			foreach (var orderLine in order.OrderLines)
+			foreach (var cartline in orderDto.Cart.Lines)
 			{
 				_context.OrderLines.Add(new OrderLine
 				{
-					OrderHeaderId = order.OrderHeaderId,
-					ProductId = orderLine.ProductId
+					OrderId = order.OrderId,
+					ProductId = (int)cartline.Product.ProductId,
+					Quantity = cartline.Quantity
 				});
 			}
 

@@ -1,4 +1,5 @@
-﻿using Data.Models;
+﻿
+using Data.Entities;
 
 namespace DAL.Repositories.Abstract
 {
