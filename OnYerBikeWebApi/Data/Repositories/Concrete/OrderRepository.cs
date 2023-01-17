@@ -1,8 +1,7 @@
 ﻿using DAL.Context;
+using Data.Dtos;
 using Data.Entities;
-using Data.Models;
 using Data.Repositories.Abstract;
-using WebApi.Models;
 
 namespace Data.Repositories.Concrete
 {
