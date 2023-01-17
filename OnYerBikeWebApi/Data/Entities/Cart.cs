@@ -1,4 +1,4 @@
-﻿using Data.Models;
+﻿using Data.Dtos;
 using System.ComponentModel.DataAnnotations;
 
 namespace Data.Entities

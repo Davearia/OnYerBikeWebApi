@@ -1,5 +1,5 @@
 ﻿
-namespace Data.Models
+namespace Data.Dtos
 {
     public class OrderDetailDto
     {

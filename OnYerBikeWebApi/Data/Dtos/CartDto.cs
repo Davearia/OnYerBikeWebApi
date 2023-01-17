@@ -1,7 +1,7 @@
 ﻿using Data.Entities;
 using System.ComponentModel.DataAnnotations;
 
-namespace Data.Models
+namespace Data.Dtos
 {
     public class CartDto
     {

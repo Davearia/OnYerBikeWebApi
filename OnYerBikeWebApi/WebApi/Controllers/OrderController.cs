@@ -1,10 +1,9 @@
 ﻿using DAL.Repositories.Abstract;
+using Data.Dtos;
 using Data.Entities;
-using Data.Models;
 using Data.Repositories.Abstract;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
-using WebApi.Models;
 
 namespace WebApi.Controllers
 {

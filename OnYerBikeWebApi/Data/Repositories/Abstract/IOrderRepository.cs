@@ -1,5 +1,6 @@
-﻿using Data.Models;
-using WebApi.Models;
+﻿
+
+using Data.Dtos;
 
 namespace Data.Repositories.Abstract
 {

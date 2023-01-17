@@ -1,7 +1,5 @@
 ﻿
-using Data.Models;
-
-namespace WebApi.Models
+namespace Data.Dtos
 {
     public class OrderDto
     {
