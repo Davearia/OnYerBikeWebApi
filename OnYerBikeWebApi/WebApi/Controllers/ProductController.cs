@@ -85,7 +85,7 @@ namespace DjBikeShopWebAPI.Controllers
         [HttpPut("{productId}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        public IActionResult UpdateProduct(int productId, [FromBody] Product product)
+        public IActionResult UpdateProduct([FromBody] Product product)
         {
             try
             {
@@ -94,8 +94,7 @@ namespace DjBikeShopWebAPI.Controllers
                     _logger.LogError("Product model not valid");
                     return BadRequest("Product model not valid");
                 }
-
-                product.ProductId = productId;
+               
                 _repository.Update(product);
                 _repository.Save();
 
