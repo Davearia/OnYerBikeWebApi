@@ -9,6 +9,8 @@ namespace Data.Repositories.Abstract
 		List<OrderDetailDto> GetOrderDetails(int orderId);
 
         void CreateOrder(OrderDto order);
+        List<OrderDto> GetAllOrders();
 
-	}
+
+    }
 }

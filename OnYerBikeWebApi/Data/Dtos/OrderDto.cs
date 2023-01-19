@@ -18,6 +18,8 @@ namespace Data.Dtos
         public string? Country { get; set; }
         public bool? Shipped { get; set; }
         public DateTime? OrderDate { get; set; }
+        public decimal? OrderPrice { get; set; }
+        public int? OrderQuantity { get; set; }
 
         public CartDto Cart { get; set; }
 

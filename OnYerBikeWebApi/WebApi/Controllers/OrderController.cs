@@ -32,7 +32,7 @@ namespace WebApi.Controllers
         {
             try
             {
-                return Ok(_repository.GetAll());
+                return Ok(_orderRepository.GetAllOrders());
             }
             catch (Exception ex)
             {

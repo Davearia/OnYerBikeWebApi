@@ -20,7 +20,28 @@ namespace Data.Repositories.Concrete
 			this._context = _context;
 		}
 
-		public List<OrderDetailDto> GetOrderDetails(int orderId)
+        public List<OrderDto> GetAllOrders()
+        {
+			var query = from orders in _context.Orders
+				select new OrderDto
+				{
+					Address = orders.Address,
+					City = orders.City,
+					Country = orders.Country,
+					Name = orders.Name,
+					OrderDate = orders.OrderDate,
+					OrderId = orders.OrderId,
+					PostCode = orders.PostCode,
+					Shipped = orders.Shipped != null ? orders.Shipped : false,
+					State = orders.State,
+					OrderPrice = orders.Cart.CartPrice,
+					OrderQuantity = orders.Cart.ItemCount					
+				};
+
+            return query.ToList();
+        }
+
+        public List<OrderDetailDto> GetOrderDetails(int orderId)
 		{
 			var query = from products in _context.Products
 						join orderLines in _context.OrderLines on products.ProductId equals orderLines.ProductId
