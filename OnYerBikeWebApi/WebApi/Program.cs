@@ -18,6 +18,7 @@ builder.Services.AddTransient<BikeShopDbContext>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddTransient<IProductRepository, ProductRepository>();
 builder.Services.AddTransient<IOrderRepository, OrderRepository>();
+builder.Services.AddTransient<IUserRepository, UserRepository>();
 
 //Configure DB context
 var connectionString = builder.Configuration.GetConnectionString("AppDb");

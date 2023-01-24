@@ -1,5 +1,6 @@
 ﻿using DAL.Repositories.Abstract;
 using Data.Entities;
+using Data.Repositories.Abstract;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DjBikeShopWebAPI.Controllers
@@ -10,12 +11,15 @@ namespace DjBikeShopWebAPI.Controllers
     {
 
         private readonly ILogger<UserController> _logger;
+        private readonly IUserRepository _userRepository;
         private readonly IGenericRepository<User> _repository;
 
         public UserController(ILogger<UserController> logger,
+            IUserRepository userRepository,
             IGenericRepository<User> repository)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
@@ -26,7 +30,7 @@ namespace DjBikeShopWebAPI.Controllers
         {
             try
             {
-                return Ok(_repository.GetAll());
+                return Ok(_userRepository.GetAllUsers());
             }
             catch (Exception ex)
             {
