@@ -1,9 +1,10 @@
 ﻿using Data.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Context
 {
-	public class BikeShopDbContext : DbContext
+	public class BikeShopDbContext : IdentityDbContext<ApiUser>
     {
 
         public DbSet<Product> Products { get; set; }
@@ -25,6 +26,9 @@ namespace DAL.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            base.OnModelCreating(modelBuilder);
+
             //Deal with decimal column issue: https://stackoverflow.com/questions/62550667/validation-30000-no-type-specified-for-the-decimal-column
             var decimalProps = modelBuilder.Model
             .GetEntityTypes()
