@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using WebApi.Services;
 
 namespace WebApi
 {
@@ -27,13 +28,13 @@ namespace WebApi
 			builder.AddEntityFrameworkStores<BikeShopDbContext>().AddDefaultTokenProviders();
 		}
 
-		public static void ConfigureJwt(this IServiceCollection services, IConfiguration configuation)
+		public static void ConfigureJwt(this IServiceCollection services, IConfiguration configuration)
 		{
-			var issuer = configuation.GetSection("Jwt:Issuer").Value;
+			var issuer = configuration.GetSection("Jwt:Issuer").Value;
 
 			//This value is in appsetting for our demo app, it would be in something more secure for prod like environment variables etc!!!!
 			//https://www.youtube.com/watch?v=iIsaEzNXhoo 16 minutes in
-			var key = configuation.GetSection("Jwt:Key").Value;
+			var key = configuration.GetSection("Jwt:Key").Value ?? string.Empty;
 
 			services.AddAuthentication(o =>
 			{
@@ -42,7 +43,7 @@ namespace WebApi
 			})
 			.AddJwtBearer(o =>
 			{
-				o.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+				o.TokenValidationParameters = new TokenValidationParameters
 				{
 					ValidateIssuer = true,
 					ValidateLifetime = true,
@@ -57,14 +58,15 @@ namespace WebApi
 		{
 			builder.Services.AddTransient<BikeShopDbContext>();
 			builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-			builder.Services.AddTransient<IProductRepository, ProductRepository>();
+            builder.Services.AddScoped<IAuthManager, AuthManager>();
+
+            builder.Services.AddTransient<IProductRepository, ProductRepository>();
 			builder.Services.AddTransient<IOrderRepository, OrderRepository>();
-			builder.Services.AddTransient<IUserRepository, UserRepository>();
-		}
+			builder.Services.AddTransient<IUserRepository, UserRepository>();            
+        }
 
 		public static void ApplyCorsPolicies(this IServiceCollection services, WebApplication app)
-		{
-			// Shows UseCors with CorsPolicyBuilder.
+		{			
 			app.UseCors(builder =>
 			{
 				builder
@@ -75,8 +77,7 @@ namespace WebApi
 		}
 
 		public static void AddSwagger(this IServiceCollection services, WebApplication app)
-		{
-			// Configure the HTTP request pipeline.
+		{			
 			if (app.Environment.IsDevelopment())
 			{
 				app.UseSwagger();
@@ -88,7 +89,6 @@ namespace WebApi
 		{
 			var connectionString = builder.Configuration.GetConnectionString("AppDb");
 			builder.Services.AddDbContext<BikeShopDbContext>(options => options.UseSqlServer(connectionString));
-
 		}
 
 		public static void RunDbMigrations(this IServiceCollection sv, WebApplication app)

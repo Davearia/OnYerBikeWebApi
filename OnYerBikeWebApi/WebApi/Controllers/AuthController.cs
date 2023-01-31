@@ -1,0 +1,96 @@
+﻿using AutoMapper;
+using Data.Dtos;
+using Data.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+
+namespace WebApi.Controllers
+{
+   
+    [Route("api/[controller]")]
+    [ApiController]
+    public class AuthController : ControllerBase
+    {
+
+        private readonly UserManager<ApiUser> _userManager;      
+        private readonly ILogger<AuthController> _logger;
+        private readonly IMapper _mapper;
+
+        public AuthController(UserManager<ApiUser> userManager,          
+            ILogger<AuthController> logger,
+            IMapper mapper
+            )
+        {
+            _userManager = userManager ?? throw new ArgumentException(nameof(userManager));           
+            _logger = logger ?? throw new ArgumentException(nameof(logger));
+            _mapper = mapper ?? throw new ArgumentException(nameof(mapper));
+        }
+
+        [HttpPost]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
+        [Route("register")]
+        public async Task<IActionResult> Register([FromBody] UserDto userDto)
+        {
+            _logger.LogInformation($"Registration attempt for {userDto.Email}");
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                var user = _mapper.Map<ApiUser>(userDto);
+                user.UserName = userDto.Email;
+                var result = await _userManager.CreateAsync(user, userDto.Password);
+
+                if (!result.Succeeded)
+                {
+                    return BadRequest("Register failed");
+                }
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error occured in {nameof(Register)}");
+                return Problem($"Error occured in {nameof(Register)}", statusCode: 500);
+            }
+        }
+
+        //[HttpPost]
+        //[ProducesResponseType(200)]
+        //[ProducesResponseType(400)]
+        //[ProducesResponseType(500)]
+        //[Route("login")]
+        //public async Task<IActionResult> Login([FromBody] LoginUserDto userDto)
+        //{
+        //    _logger.LogInformation($"Login attempt for {userDto.Email}");
+
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
+
+        //    try
+        //    {
+        //        var result = await _signInManager.PasswordSignInAsync(userDto.Email, userDto.Password, false, false);
+
+        //        if (!result.Succeeded)
+        //        {
+        //            return Unauthorized(userDto);
+        //        }
+
+        //        return Ok();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError(ex, $"Error occured in {nameof(Login)}");
+        //        return Problem($"Error occured in {nameof(Login)}", statusCode: 500);
+        //    }
+        //}
+
+    }
+}

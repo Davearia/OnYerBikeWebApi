@@ -1,4 +1,3 @@
-using Microsoft.Extensions.Configuration;
 using WebApi;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +10,7 @@ builder.Services.AddAuthentication();
 builder.Services.ConfigureIdentity();
 builder.Services.ConfigureJwt(builder.Configuration);
 builder.Services.AddDbContext(builder);
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 
