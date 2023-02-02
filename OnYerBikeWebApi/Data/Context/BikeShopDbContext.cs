@@ -1,4 +1,5 @@
 ﻿using Data.Entities;
+using Data.Seeding;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +16,7 @@ namespace DAL.Context
 		public DbSet<Order> Orders { get; set; }		
         public DbSet<OrderLine> OrderLines { get; set; }
         public DbSet<Cart> Carts { get; set; }
+        public DbSet<ApiUser> ApiUsers { get; set; }
 
         public BikeShopDbContext(DbContextOptions<BikeShopDbContext> options) : base(options)
         {
@@ -26,8 +28,9 @@ namespace DAL.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.ApplyConfiguration(new RoleConfiguration());
 
             //Deal with decimal column issue: https://stackoverflow.com/questions/62550667/validation-30000-no-type-specified-for-the-decimal-column
             var decimalProps = modelBuilder.Model

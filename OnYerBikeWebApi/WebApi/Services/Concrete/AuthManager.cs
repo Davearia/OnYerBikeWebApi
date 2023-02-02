@@ -5,8 +5,9 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using WebApi.Services.Abstract;
 
-namespace WebApi.Services
+namespace WebApi.Services.Concrete
 {
     public class AuthManager : IAuthManager
     {
@@ -52,7 +53,7 @@ namespace WebApi.Services
 
             foreach (var role in roles)
             {
-               claims.Add(new Claim(ClaimTypes.Role, role));
+                claims.Add(new Claim(ClaimTypes.Role, role));
             }
 
             return claims;
@@ -71,11 +72,11 @@ namespace WebApi.Services
             return token;
         }
 
-        public async Task<bool> ValidateUser(UserDto loginUserDto)
+        public async Task<bool> ValidateUser(LoginUserDto loginUserDto)
         {
             _user = await _userManager.FindByEmailAsync(loginUserDto.Email);
 
-            return (_user != null && await _userManager.CheckPasswordAsync(_user, loginUserDto.Password));
+            return _user != null && await _userManager.CheckPasswordAsync(_user, loginUserDto.Password);
         }
 
     }

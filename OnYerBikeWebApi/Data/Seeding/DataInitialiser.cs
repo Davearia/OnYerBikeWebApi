@@ -1,14 +1,15 @@
 ﻿
 using DAL.Context;
 using Data.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
 namespace DAL.Seeding
 {
-	public class DataInitialiser
+    public class DataInitialiser
     {
-
+              
         public static void SeedData(BikeShopDbContext context, string rootPath)
         {
             SeedProductData(context, rootPath);
@@ -16,8 +17,10 @@ namespace DAL.Seeding
             SeedProductReviewsData(context, rootPath);
             SeedProductSubcategories(context, rootPath);
             SeedUsers(context, rootPath);
+            SeedAspNetUsers(context, rootPath);
+            AddRolesToAdminUser(context, rootPath);
         }
-      
+
         private static void SeedProductData(BikeShopDbContext context, string rootPath)
         {
             if (!context.Products.Any())
@@ -83,7 +86,7 @@ namespace DAL.Seeding
                     }
                 }
 
-                context.SaveChanges();                          
+                context.SaveChanges();
             }
         }
 
@@ -131,7 +134,60 @@ namespace DAL.Seeding
                     }
                 }
 
-                context.SaveChanges();                
+                context.SaveChanges();
+            }
+        }
+
+        private static void SeedAspNetUsers(BikeShopDbContext context, string rootPath)
+        {
+            if (!context.ApiUsers.Any())
+            {
+                var filePath = rootPath + "AspNetUsers.json";
+                var usersJson = File.ReadAllText(filePath);
+
+                if (usersJson != null)
+                {
+                    var users = JsonConvert.DeserializeObject<List<ApiUser>>(usersJson);
+
+                    if (users != null)
+                    {
+                        context.ApiUsers.AddRange(users);
+                    }
+                }
+
+                context.SaveChanges();
+            }
+        }
+
+        private static void AddRolesToAdminUser(BikeShopDbContext context, string rootPath)
+        {
+            var filePath = rootPath + "AspNetUsers.json";
+            var usersJson = File.ReadAllText(filePath);
+
+            if (usersJson != null)
+            {
+                var users = JsonConvert.DeserializeObject<List<ApiUser>>(usersJson);
+
+                if(users != null){
+                    var adminUser = users.Where(u => u.UserName == "AdminUser").FirstOrDefault();
+                    var role = context.Roles.Where(r => r.Name == "Administrator").FirstOrDefault();
+
+                    if (adminUser != null && role != null)
+                    {                        
+                        var userRole = new IdentityUserRole<string>
+                        {
+                            RoleId= role.Id,                            
+                            UserId= adminUser.Id
+                        };
+
+                        if(!context.UserRoles.Any(ur => ur.RoleId == role.Id && ur.UserId == adminUser.Id))
+                        {
+                            context.UserRoles.Add(userRole);
+
+                            context.SaveChanges();
+                        }                                               
+                    }
+                }                
             }
         }
 

@@ -26,6 +26,8 @@ namespace Data.Dtos
 
         [DataType(DataType.PhoneNumber)]
         public string PhoneNumber { get; set; } = string.Empty;
+
+        public ICollection<string> Roles { get; set;} = new List<string>();
       
     }
 }

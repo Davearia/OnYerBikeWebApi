@@ -1,0 +1,21 @@
+[
+	{
+		"Id": "71fc2c83-e72d-43eb-af98-dfef0c3d461e",
+		"FirstName": "Admin",
+		"LastName": "User",
+		"UserName": "AdminUser",
+		"NormalizedUserName": "ADMINUSER",
+		"Email": "admin@user.com",
+		"NormalizedEmail": "ADMIN@USER.COM",
+		"EmailConfirmed": false,
+		"PasswordHash": "AQAAAAEAACcQAAAAEP9iYE57oPT7+tK3ofC8F+Ib6JVXq67tyFTv63hPljUMMoVEVHYvsSj7D2J5NJ6/lA==",
+		"SecurityStamp": "UI4G3QPFGNBDDFE4GYGNE4H5EP4E4WV7",
+		"ConcurrencyStamp": "4d8f2a02-b6f6-4f8e-83ab-eaebb189dbe5",
+		"PhoneNumber": "07584304011",
+		"PhoneNumberConfirmed": false,
+		"TwoFactorEnabled": false,
+		"LockoutEnd": null,
+		"LockoutEnabled": true,
+		"AccessFailedCount": 0
+	}
+]

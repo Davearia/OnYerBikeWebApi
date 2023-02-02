@@ -1,11 +1,11 @@
 ﻿using Data.Dtos;
 
-namespace WebApi.Services
+namespace WebApi.Services.Abstract
 {
     public interface IAuthManager
     {
 
-        Task<bool> ValidateUser(UserDto loginUserDto);
+        Task<bool> ValidateUser(LoginUserDto loginUserDto);
         Task<string> CreateToken();
 
     }
