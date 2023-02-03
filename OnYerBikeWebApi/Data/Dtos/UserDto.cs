@@ -13,6 +13,7 @@ namespace Data.Dtos
         [Required]
         [StringLength(15, ErrorMessage = "Your password is limited to {2} to {1} characters", MinimumLength = 1)]
         public string Password { get; set; } = string.Empty;
+
     }
 
     /// <summary>

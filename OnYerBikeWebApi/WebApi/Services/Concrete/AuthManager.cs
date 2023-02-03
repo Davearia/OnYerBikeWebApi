@@ -36,10 +36,8 @@ namespace WebApi.Services.Concrete
         {
             var key = _configuration.GetSection("Jwt:Key").Value ?? string.Empty;
             var secret = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
-
-            //TODO try 512
+         
             return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
-
         }
 
         private async Task<List<Claim>> GetClaims()

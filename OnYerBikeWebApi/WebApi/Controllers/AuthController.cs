@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Data.Dtos;
 using Data.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Services.Abstract;
@@ -71,6 +72,7 @@ namespace WebApi.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]
         [Route("login")]
+        [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] LoginUserDto userDto)
         {
             _logger.LogInformation($"Login attempt for {userDto.Email}");
