@@ -22,21 +22,18 @@ namespace WebApi
     public static class ServiceExtensons
 	{
 
-		public static void ConfigureIdentity(this IServiceCollection services)
+		public static void ConfigureIdentity(this IServiceCollection services, WebApplicationBuilder builder)
 		{
-			var builder = services.AddIdentityCore<ApiUser>(q => q.User.RequireUniqueEmail = true);
-
-			builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole), services);
-			builder.AddEntityFrameworkStores<BikeShopDbContext>().AddDefaultTokenProviders();
+			builder.Services.AddIdentityCore<ApiUser>()
+				.AddRoles<IdentityRole>()
+				.AddEntityFrameworkStores<BikeShopDbContext>();
 		}
 
 		public static void ConfigureJwt(this IServiceCollection services, IConfiguration configuration)
 		{
-			var issuer = configuration.GetSection("Jwt:Issuer").Value;
-
-			//This value is in appsetting for our demo app, it would be in something more secure for prod like environment variables etc!!!!
-			//https://www.youtube.com/watch?v=iIsaEzNXhoo 16 minutes in
+			var issuer = configuration.GetSection("Jwt:Issuer").Value;			
 			var key = configuration.GetSection("Jwt:Key").Value ?? string.Empty;
+			var validAudience = configuration.GetSection("Jwt:Audience").Value ?? String.Empty;
 
 			services.AddAuthentication(o =>
 			{
@@ -47,11 +44,13 @@ namespace WebApi
 			{
 				o.TokenValidationParameters = new TokenValidationParameters
 				{
-					ValidateIssuer = true,
-					ValidateLifetime = true,
 					ValidateIssuerSigningKey = true,
+					ValidateIssuer = true,
+					ValidateAudience = true,
+					ValidateLifetime = true,
+					ClockSkew = TimeSpan.Zero,
 					ValidIssuer = issuer,
-					ValidateAudience= true,
+					ValidAudience = validAudience,
 					IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(key))
 				};
 			});

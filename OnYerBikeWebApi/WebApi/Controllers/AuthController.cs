@@ -85,14 +85,21 @@ namespace WebApi.Controllers
 
             try
             {
-                if(!await _authManager.ValidateUser(userDto))
-                {
-                    return Unauthorized();
-                }
+				var authResponse = await _authManager.Login(userDto);
+				if (authResponse == null)
+				{
+					return Unauthorized();
+				}
+				return Ok(authResponse);
 
-                userDto.Token = await _authManager.CreateToken();
+				//if (!await _authManager.ValidateUser(userDto))
+    //            {
+    //                return Unauthorized();
+    //            }
 
-                return Accepted(userDto);                
+    //            userDto.Token = await _authManager.CreateToken();
+
+    //            return Accepted(userDto);                
             }
             catch (Exception ex)
             {

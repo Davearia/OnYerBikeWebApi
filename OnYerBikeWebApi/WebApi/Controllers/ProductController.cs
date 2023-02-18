@@ -25,8 +25,7 @@ namespace DjBikeShopWebAPI.Controllers
 
         [HttpGet]
         [ProducesResponseType(200)]
-        [ProducesResponseType(400)]
-        [Authorize]
+        [ProducesResponseType(400)]        
         public ActionResult<IEnumerable<Product>> GetAllProducts()
         {
             try
