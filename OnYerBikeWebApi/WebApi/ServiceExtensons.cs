@@ -51,6 +51,7 @@ namespace WebApi
 					ValidateLifetime = true,
 					ValidateIssuerSigningKey = true,
 					ValidIssuer = issuer,
+					ValidateAudience= true,
 					IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(key))
 				};
 			});

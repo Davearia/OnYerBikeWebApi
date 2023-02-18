@@ -64,7 +64,7 @@ namespace WebApi.Services.Concrete
             var token = new JwtSecurityToken(
                 issuer: issuer,
                 claims: claims,
-                expires: DateTime.Now.AddDays(1),
+                expires: DateTime.Now.AddMinutes(10),
                 signingCredentials: signingCredentials);
 
             return token;

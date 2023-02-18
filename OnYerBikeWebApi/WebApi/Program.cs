@@ -19,6 +19,7 @@ builder.Services.RunDbMigrations(app);
 builder.Services.SeedDb(app);
 builder.Services.ApplyCorsPolicies(app);
 
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();

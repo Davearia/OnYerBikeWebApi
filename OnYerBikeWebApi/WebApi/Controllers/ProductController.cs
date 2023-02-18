@@ -1,11 +1,12 @@
 ﻿using DAL.Repositories.Abstract;
 using Data.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DjBikeShopWebAPI.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
+    [ApiController]   
     public class ProductController : ControllerBase
     {
 
@@ -25,6 +26,7 @@ namespace DjBikeShopWebAPI.Controllers
         [HttpGet]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
+        [Authorize]
         public ActionResult<IEnumerable<Product>> GetAllProducts()
         {
             try

@@ -36,6 +36,7 @@ namespace WebApi.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]
         [Route("register")]
+        [Authorize]
         public async Task<IActionResult> Register([FromBody] UserDto userDto)
         {
             _logger.LogInformation($"Registration attempt for {userDto.Email}");
@@ -89,7 +90,9 @@ namespace WebApi.Controllers
                     return Unauthorized();
                 }
 
-                return Accepted(new { Token = await _authManager.CreateToken() });                
+                userDto.Token = await _authManager.CreateToken();
+
+                return Accepted(userDto);                
             }
             catch (Exception ex)
             {
