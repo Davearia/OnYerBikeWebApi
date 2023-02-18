@@ -2,11 +2,13 @@
 using Data.Dtos;
 using Data.Entities;
 using Data.Repositories.Abstract;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 
 namespace WebApi.Controllers
 {
+	[Authorize]
 	[Route("api/[controller]")]
 	[ApiController]
 	public class OrderController : ControllerBase

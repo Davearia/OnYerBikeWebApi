@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Text;
 using WebApi.Services.Abstract;
 using WebApi.Services.Concrete;
 
@@ -22,6 +23,12 @@ namespace WebApi
     public static class ServiceExtensons
 	{
 
+		public static void AddDbContext(this IServiceCollection sv, WebApplicationBuilder builder)
+		{
+			var connectionString = builder.Configuration.GetConnectionString("AppDb");
+			builder.Services.AddDbContext<BikeShopDbContext>(options => options.UseSqlServer(connectionString));
+		}
+
 		public static void ConfigureIdentity(this IServiceCollection services, WebApplicationBuilder builder)
 		{
 			builder.Services.AddIdentityCore<ApiUser>()
@@ -29,43 +36,37 @@ namespace WebApi
 				.AddEntityFrameworkStores<BikeShopDbContext>();
 		}
 
-		public static void ConfigureJwt(this IServiceCollection services, IConfiguration configuration)
+		public static void ConfigureJwt(this IServiceCollection services, WebApplicationBuilder builder)
 		{
-			var issuer = configuration.GetSection("Jwt:Issuer").Value;			
-			var key = configuration.GetSection("Jwt:Key").Value ?? string.Empty;
-			var validAudience = configuration.GetSection("Jwt:Audience").Value ?? String.Empty;
-
-			services.AddAuthentication(o =>
-			{
-				o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-				o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-			})
-			.AddJwtBearer(o =>
-			{
-				o.TokenValidationParameters = new TokenValidationParameters
+			builder.Services.AddAuthentication(options => {
+				options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme; // "Bearer"
+				options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+			}).AddJwtBearer(options => {
+				options.TokenValidationParameters = new TokenValidationParameters
 				{
 					ValidateIssuerSigningKey = true,
 					ValidateIssuer = true,
 					ValidateAudience = true,
 					ValidateLifetime = true,
 					ClockSkew = TimeSpan.Zero,
-					ValidIssuer = issuer,
-					ValidAudience = validAudience,
-					IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(key))
+					ValidIssuer = builder.Configuration["Jwt:Issuer"],
+					ValidAudience = builder.Configuration["Jwt:ValidAudience"],
+					IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
 				};
 			});
 		}
 
 		public static void AddDiDependencies(this IServiceCollection services, WebApplicationBuilder builder)
 		{
+			builder.Services.AddAutoMapper(typeof(Mapper));
 			builder.Services.AddTransient<BikeShopDbContext>();
 			builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-            builder.Services.AddScoped<IAuthManager, AuthManager>();           
+			builder.Services.AddScoped<IAuthManager, AuthManager>();
 
-            builder.Services.AddTransient<IProductRepository, ProductRepository>();
+			builder.Services.AddTransient<IProductRepository, ProductRepository>();
 			builder.Services.AddTransient<IOrderRepository, OrderRepository>();
-			builder.Services.AddTransient<IUserRepository, UserRepository>();            
-        }
+			builder.Services.AddTransient<IUserRepository, UserRepository>();
+		}
 
 		public static void ApplyCorsPolicies(this IServiceCollection services, WebApplication app)
 		{			
@@ -123,13 +124,7 @@ namespace WebApi
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "On Yer Bike!", Version = "v1" });
             });
         }
-
-        public static void AddDbContext(this IServiceCollection sv, WebApplicationBuilder builder)
-		{
-			var connectionString = builder.Configuration.GetConnectionString("AppDb");
-			builder.Services.AddDbContext<BikeShopDbContext>(options => options.UseSqlServer(connectionString));
-		}
-
+        
 		public static void RunDbMigrations(this IServiceCollection sv, WebApplication app)
 		{
 			//Apply any DB migrations

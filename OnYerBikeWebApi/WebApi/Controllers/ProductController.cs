@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DjBikeShopWebAPI.Controllers
 {
-    [Route("api/[controller]")]
+	[Authorize]
+	[Route("api/[controller]")]
     [ApiController]   
     public class ProductController : ControllerBase
     {

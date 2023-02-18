@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DjBikeShopWebAPI.Controllers
 {
+	[Authorize]
 	[Route("api/[controller]")]
     [ApiController]
     public class ProductCategoryController : ControllerBase
@@ -22,8 +23,7 @@ namespace DjBikeShopWebAPI.Controllers
 
         [HttpGet]
         [ProducesResponseType(200)]
-        [ProducesResponseType(400)]
-		[Authorize]
+        [ProducesResponseType(400)]		
 		public ActionResult<IEnumerable<ProductCategory>> GetAllProductCategories()
         {
             try
