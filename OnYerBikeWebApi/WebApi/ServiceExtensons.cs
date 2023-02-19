@@ -97,7 +97,7 @@ namespace WebApi
 					Description = @"JWT Authorisation header using the Bearer scheme.
 						Enter 'Bearer' [space] and then your token in the text input below.
 						Example Bearer 12345abcdef",
-					Name = "Authorisation",
+					Name = "Authorization",
 					In = ParameterLocation.Header,
 					Type = SecuritySchemeType.ApiKey,
 					Scheme = "Bearer"
@@ -113,7 +113,7 @@ namespace WebApi
 								Type = ReferenceType.SecurityScheme,
 								Id = "Bearer"
 							},
-							Scheme = "0auth2",
+							Scheme = "OAuth2",
 							Name = "Bearer",
                             In = ParameterLocation.Header,
                         },

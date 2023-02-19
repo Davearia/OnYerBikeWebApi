@@ -23,6 +23,7 @@ namespace WebApi.Services.Concrete
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
+        //Possibly legacy code from my 1st atttempt but will leave it here for now.
         //public async Task<string> CreateToken()
         //{
         //    var signingCredentials = GetSigningCredentials();
@@ -93,7 +94,7 @@ namespace WebApi.Services.Concrete
 
 		private async Task<string> GenerateToken(ApiUser user)
 		{
-			var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+			var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]?? String.Empty));
 			var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 			var roles = await _userManager.GetRolesAsync(user);
 			var roleClaims = roles.Select(x => new Claim(ClaimTypes.Role, x)).ToList();
@@ -116,7 +117,6 @@ namespace WebApi.Services.Concrete
 				);
 			return new JwtSecurityTokenHandler().WriteToken(token);
 		}
-
 
 	}
 }
